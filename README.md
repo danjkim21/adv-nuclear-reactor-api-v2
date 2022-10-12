@@ -31,7 +31,7 @@
 
 As an energy wonk, I've notice how difficult it is find up to date information on advanced nuclear reactor designs. This project aims to aggregate information on all advanced nuclear reactor technologies that exist around the world. <br>
 
-This project is the second iteration of the arDB ([Version One Link](https://github.com/danjkim21/adv-nuclear-reactor-api-v2)). This second iteration enhances the scraper to allow for multiple sources, and builds out the front end using <b>React.js. </b> It is a work in progress and the data is constantly evolving as I enhance my web scraper script and add new sources.
+This project is the second iteration of the arDB ([Version One Link](https://github.com/danjkim21/adv-nuclear-reactor-api)). This second iteration enhances the scraper to allow for multiple sources, and builds out the front end using <b>React.js. </b> It is a work in progress and the data is constantly evolving as I enhance my web scraper script and add new sources.
 
 ### How It's Made
 
@@ -116,6 +116,8 @@ Daniel Kim - [@devdanielk](https://twitter.com/devdanielk) - dan.jkim21@gmail.co
 Project Link: [https://github.com/danjkim21/adv-nuclear-reactor-api-v2](https://github.com/danjkim21/adv-nuclear-reactor-api-v2)
 
 Live Link: [#](#)
+
+Project V1 Repo: [https://github.com/danjkim21/adv-nuclear-reactor-api](https://github.com/danjkim21/adv-nuclear-reactor-api)
 
 <!-- ACKNOWLEDGMENTS -->
 
