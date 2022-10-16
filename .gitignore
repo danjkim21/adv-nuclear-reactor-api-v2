@@ -25,3 +25,12 @@ dist-ssr
 
 .env
 config
+
+# DB Files
+data-core.js
+data-general.js
+data-material.js
+data-nsss.js
+data-overview.js
+data-rcs.js
+data-rpv.js
