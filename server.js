@@ -6,9 +6,9 @@ require('dotenv').config({ path: './config/.env' });
 
 // ************* Variables ************* //
 const port = process.env.PORT || 8000;
-const scrape = require('./scripts/scrape');
-const handleData = require('./scripts/dataMerge');
-const { reactorDataMerged } = require('./db/data-merged');
+const scrape = require('./backend/scripts/scrape');
+const handleData = require('./backend/scripts/dataMerge');
+const { reactorDataMerged } = require('./backend/db/data-merged');
 
 // ************* Middleware ************ //
 app.use(cors());
