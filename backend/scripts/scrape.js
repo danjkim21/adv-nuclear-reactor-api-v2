@@ -1,7 +1,7 @@
 // ************** Modules ************** //
 const fs = require('fs');
 const cheerio = require('cheerio');
-const puppeteer = require('puppeteer');
+const puppeteer = require('puppeteer-core');
 
 // ******* Web Scraper 1.0 (Cheerio + Puppeteer) ******* //
 // Source data
