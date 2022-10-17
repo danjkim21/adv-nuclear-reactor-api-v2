@@ -11,16 +11,16 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "cheerio": "^1.0.0-rc.12",
     "concurrently": "^7.3.0",
     "cors": "^2.8.5",
-    "dotenv": "^16.0.1",
     "express": "^4.18.1",
-    "express-async-handler": "^1.2.0",
-    "lodash": "^4.17.21",
-    "puppeteer": "^18.2.1"
+    "express-async-handler": "^1.2.0"
   },
   "devDependencies": {
+    "dotenv": "^16.0.1",
+    "lodash": "^4.17.21",
+    "puppeteer": "^18.2.1",
+    "cheerio": "^1.0.0-rc.12",
     "nodemon": "^2.0.19"
   }
 }
