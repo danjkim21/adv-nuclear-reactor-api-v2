@@ -1,5 +1,5 @@
 const fs = require('fs');
-const _ = require('lodash');
+const _ = require('lodash-core');
 
 const { reactorDataOverview } = require('../db/data-overview');
 const { reactorDataCore } = require('../db/data-core');
