@@ -1,6 +1,6 @@
 import '../App.css';
 
-function ReactorDisplay({ reactorData }) {
+function ReactorDisplay({ reactorData }: any) {
   console.log(reactorData);
   return (
     <section className="section__displayArea">
@@ -27,7 +27,9 @@ function ReactorDisplay({ reactorData }) {
           <tbody>
             <tr>
               <td>Vendor</td>
-              <td><a href={reactorData[0].designOrgWebsite}>{reactorData[0].designOrg}</a></td>
+              <td>
+                <a href={reactorData[0].designOrgWebsite}>{reactorData[0].designOrg}</a>
+              </td>
             </tr>
             <tr>
               <td>Country of Origin</td>

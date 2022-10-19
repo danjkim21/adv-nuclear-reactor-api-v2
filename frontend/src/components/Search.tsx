@@ -1,8 +1,7 @@
 import '../App.css';
 
-function Search({ data, searchReactor }) {
-
-  const reactorSelections = data.map((reactor) => {
+function Search({ data, searchReactor }: any) {
+  const reactorSelections = data.map((reactor: any) => {
     return (
       <option
         key={Math.random()}

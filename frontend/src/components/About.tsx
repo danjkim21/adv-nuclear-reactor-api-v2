@@ -1,7 +1,7 @@
 import '../App.css';
 
-function About({ data }) {
-  const availableReactors = data.map((reactor) => {
+function About({ data }: any) {
+  const availableReactors = data.map((reactor: any) => {
     if (reactor.name !== '') {
       return (
         <li key={Math.random()}>

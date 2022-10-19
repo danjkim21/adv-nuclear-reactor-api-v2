@@ -5,19 +5,17 @@ import Desc from './Desc';
 import ReactorDisplay from './ReactorDisplay';
 import { useState, useEffect, useRef } from 'react';
 
-function Landing({ data }) {
+function Landing({ data }: any) {
   let [isActive, setIsActive] = useState(false);
   let [reactorData, setReactorData] = useState([]);
 
   // Search for reactor via form submit
-  const searchReactor = async (e) => {
+  const searchReactor = async (e: any) => {
     e.preventDefault();
     const inputedReactor = e.target.elements.searchReactor.value;
 
     const fetchReactorData = async () => {
-      const response = await fetch(
-        `/api/${inputedReactor}`
-      );
+      const response = await fetch(`/api/${inputedReactor}`);
       const json = await response.json();
       setReactorData(json);
     };
