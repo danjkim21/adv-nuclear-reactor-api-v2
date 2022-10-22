@@ -15,11 +15,9 @@
     <a href="https://github.com/danjkim21/adv-nuclear-reactor-api-v2"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="#">View Demo</a>
+    <a href="https://ardb.vercel.app/">View Client Site</a>
     ·
-    <a href="https://github.com/danjkim21/adv-nuclear-reactor-api-v2/issues">Report Bug</a>
-    ·
-    <a href="https://github.com/danjkim21/adv-nuclear-reactor-api-v2/issues">Request Feature</a>
+    <a href="https://ardb.cyclic.app/api">View API Site</a>
   </p>
 </div>
 
@@ -33,12 +31,16 @@ As an energy wonk, I've notice how difficult it is find up to date information o
 
 This project is the second iteration of the arDB ([Version One Link](https://github.com/danjkim21/adv-nuclear-reactor-api)). This second iteration enhances the scraper to allow for multiple sources, and builds out the front end using <b>React.js. </b> It is a work in progress and the data is constantly evolving as I enhance my web scraper script and add new sources.
 
+**The Client Side Repository and Live Link can be found here:**
+
+- [https://github.com/danjkim21/adv-nuclear-reactor-client](https://github.com/danjkim21/adv-nuclear-reactor-client)
+- [https://ardb.vercel.app/](https://ardb.vercel.app/)
+
 ### How It's Made
 
 **Tech used:**
 
 - [React]()
-- [Typescript]()
 - [Node.js](https://nodejs.org/en/)
 - [Express](https://expressjs.com/)
 - [Puppeteer](https://github.com/puppeteer/puppeteer)
@@ -51,7 +53,7 @@ The data for this API project was obtained by creating a custom web scraper scri
 
 ## Getting Started
 
-This API can be accessed via [#](#) or as a local copy. To get a local copy up and running follow these simple example steps.
+This API can be accessed via [https://ardb.cyclic.app/api](https://ardb.cyclic.app/api) or as a local copy. To get a local copy up and running follow these simple example steps.
 
 ### Installation
 
@@ -62,9 +64,6 @@ This API can be accessed via [#](#) or as a local copy. To get a local copy up a
 2. Install NPM packages
    ```sh
    npm install
-   cd frontend
-   npm install
-   cd ..
    ```
 
 <!-- USAGE EXAMPLES -->
@@ -115,7 +114,7 @@ Daniel Kim - [@devdanielk](https://twitter.com/devdanielk) - dan.jkim21@gmail.co
 
 Project Link: [https://github.com/danjkim21/adv-nuclear-reactor-api-v2](https://github.com/danjkim21/adv-nuclear-reactor-api-v2)
 
-Live Link: [#](#)
+Live Link: [https://ardb.vercel.app/](https://ardb.vercel.app/)
 
 Project V1 Repo: [https://github.com/danjkim21/adv-nuclear-reactor-api](https://github.com/danjkim21/adv-nuclear-reactor-api)
 
