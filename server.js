@@ -15,36 +15,15 @@ app.use(cors());
 app.use(express.json());
 
 // *********** API framework *********** //
-// path '/api/' -- GETS the adv. reactors API - Not filtered
-app.get('/api', (request, response) => {
-  // save request to reactorName and converts to lowerCase
-  response.json(reactorDataMerged);
-});
-
-// path '/api/:name' -- GETS the adv. reactors API - filtered by NAME
-app.get('/api/:name', (request, response) => {
-  // save request to reactorName and converts to lowerCase
-  const reactorName = request.params.name.toLowerCase();
-  console.log(`Entered: ${reactorName}`);
-
-  if (reactorDataMerged.filter((elem) => elem.name.toLowerCase() === reactorName.toLowerCase())) {
-    response.json(
-      reactorDataMerged.filter((elem) => elem.name.toLowerCase() === reactorName.toLowerCase())
-    );
-  } else {
-    response.status(404).end();
-  }
-});
+app.use('/api/', require('./routes/apiRoutes'));
 
 // Listens on Server using PORT variable
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}/`);
 });
 
-
 // ******* Web Scraper 1.0 (Cheerio + Puppeteer) ******* //
-
-async function runScraper() {
+let runScraper = async () => {
   // Scrape all sites
   let overview = await scrape.scrapeOverview();
   let general = await scrape.scrapeGeneral();
@@ -62,6 +41,6 @@ async function runScraper() {
     .catch((error) => {
       console.error(error.message);
     });
-}
+};
 
 // runScraper();
