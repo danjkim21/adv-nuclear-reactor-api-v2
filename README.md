@@ -83,10 +83,12 @@ This API can be accessed via [https://ardb.cyclic.app/api](https://ardb.cyclic.a
 
 ## Roadmap
 
-- [ ] Finish building out the search reactor feature
-- [ ] Refactor front end react and back end code
+- [x] Finish building out the search reactor feature
+- [ ] Migrate json data to MongoDB
+- [ ] Refactor pupeteer/cheerio scripts for automated insertion of data into MongoDB
 - [ ] Interactive data table feature to sort reactors by specific item (eg. thermal output)
 - [ ] Feature to allow reactor developers to add reactor data
+- [ ] Refactor front end react and back end code
 
 See the [open issues](https://github.com/danjkim21/adv-nuclear-reactor-api-v2/issues) for a full list of proposed features (and known issues).
 
