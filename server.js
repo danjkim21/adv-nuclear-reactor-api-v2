@@ -1,6 +1,7 @@
 // ************** Modules ************** //
 const express = require("express");
 const app = express();
+const mongoose = require("mongoose");
 const cors = require("cors");
 require("dotenv").config({ path: "./config/.env" });
 
@@ -14,13 +15,30 @@ const { reactorDataMerged } = require("./db/data-merged");
 app.use(cors());
 app.use(express.json());
 
+// ************* MongoDB Connection ************ //
+const connectDB = async () => {
+  try {
+    // ***** DB Connection ***** //
+    const conn = await mongoose.connect(process.env.DB_STRING, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+
+    console.log(`MongoDB Connected: ${conn.connection.host}`);
+
+    // ***** Run Server Connection ***** //
+    app.listen(port, () => {
+      console.log(`Server is running on http://localhost:${port}/`);
+    });
+  } catch (err) {
+    console.error(err);
+    process.exit(1);
+  }
+};
+connectDB();
+
 // *********** API framework *********** //
 app.use("/api/", require("./routes/apiRoutes"));
-
-// Listens on Server using PORT variable
-app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}/`);
-});
 
 // ******* Web Scraper 1.0 (Cheerio + Puppeteer) ******* //
 let runScraper = async () => {
