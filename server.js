@@ -10,6 +10,7 @@ const port = process.env.PORT || 8000;
 const scrape = require("./scripts/scrape");
 const handleData = require("./scripts/dataMerge");
 const { reactorDataMerged } = require("./db/data-merged");
+const apiRoutes = require("./routes/apiRoutes");
 
 // ************* Middleware ************ //
 app.use(cors());
@@ -18,7 +19,7 @@ app.use(express.json());
 // ************* MongoDB Connection ************ //
 const connectDB = async () => {
   try {
-    // ***** DB Connection ***** //
+    // ***** Connect to MongoDB ***** //
     const conn = await mongoose.connect(process.env.DB_STRING, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
@@ -37,10 +38,10 @@ const connectDB = async () => {
 };
 connectDB();
 
-// *********** API framework *********** //
-app.use("/api/", require("./routes/apiRoutes"));
+// *********** Routes/Pathing *********** //
+app.use("/api/", apiRoutes);
 
-// ******* Web Scraper 1.0 (Cheerio + Puppeteer) ******* //
+// ******* Web Scraper 1.1 (Cheerio + Puppeteer) ******* //
 let runScraper = async () => {
   // Scrape all sites
   let overview = await scrape.scrapeOverview();
