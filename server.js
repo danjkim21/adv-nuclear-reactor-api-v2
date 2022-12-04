@@ -1,21 +1,21 @@
 // ************** Modules ************** //
-const express = require('express');
+const express = require("express");
 const app = express();
-const cors = require('cors');
-require('dotenv').config({ path: './config/.env' });
+const cors = require("cors");
+require("dotenv").config({ path: "./config/.env" });
 
 // ************* Variables ************* //
 const port = process.env.PORT || 8000;
-const scrape = require('./scripts/scrape');
-const handleData = require('./scripts/dataMerge');
-const { reactorDataMerged } = require('./db/data-merged');
+const scrape = require("./scripts/scrape");
+const handleData = require("./scripts/dataMerge");
+const { reactorDataMerged } = require("./db/data-merged");
 
 // ************* Middleware ************ //
 app.use(cors());
 app.use(express.json());
 
 // *********** API framework *********** //
-app.use('/api/', require('./routes/apiRoutes'));
+app.use("/api/", require("./routes/apiRoutes"));
 
 // Listens on Server using PORT variable
 app.listen(port, () => {
