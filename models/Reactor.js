@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const ReactorSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true,
+    // required: true,
   },
   fullName: {
     type: String,

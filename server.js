@@ -11,6 +11,7 @@ const scrape = require("./scripts/scrape");
 const handleData = require("./scripts/dataMerge");
 const { reactorDataMerged } = require("./db/data-merged");
 const apiRoutes = require("./routes/apiRoutes");
+const Reactor = require("./models/Reactor.js");
 
 // ************* Middleware ************ //
 app.use(cors());
@@ -63,3 +64,16 @@ let runScraper = async () => {
 };
 
 // runScraper();
+
+// ********** MongoDB Merge ************ //
+let insertToMongoDB = async (data) => {
+  try {
+    // Insert all merged datat documents into Mongodb via Reactor Model
+    await Reactor.insertMany(data);
+    console.log("data logged");
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+// insertToMongoDB(reactorDataMerged);
