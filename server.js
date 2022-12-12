@@ -1,6 +1,7 @@
 // ************** Modules ************** //
 const express = require('express');
 const app = express();
+const mongoose = require('mongoose');
 const cors = require('cors');
 require('dotenv').config({ path: './config/.env' });
 
@@ -9,20 +10,39 @@ const port = process.env.PORT || 8000;
 const scrape = require('./scripts/scrape');
 const handleData = require('./scripts/dataMerge');
 const { reactorDataMerged } = require('./db/data-merged');
+const apiRoutes = require('./routes/apiRoutes');
+const Reactor = require('./models/Reactor.js');
 
 // ************* Middleware ************ //
 app.use(cors());
 app.use(express.json());
 
-// *********** API framework *********** //
-app.use('/api/', require('./routes/apiRoutes'));
+// ************* MongoDB Connection ************ //
+const connectDB = async () => {
+  try {
+    // ***** Connect to MongoDB ***** //
+    const conn = await mongoose.connect(process.env.DB_STRING, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
 
-// Listens on Server using PORT variable
-app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}/`);
-});
+    console.log(`MongoDB Connected: ${conn.connection.host}`);
 
-// ******* Web Scraper 1.0 (Cheerio + Puppeteer) ******* //
+    // ***** Run Server Connection ***** //
+    app.listen(port, () => {
+      console.log(`Server is running on http://localhost:${port}/`);
+    });
+  } catch (err) {
+    console.error(err);
+    process.exit(1);
+  }
+};
+connectDB();
+
+// *********** Routes/Pathing *********** //
+app.use('/api/', apiRoutes);
+
+// ******* Web Scraper 1.1 (Cheerio + Puppeteer) ******* //
 let runScraper = async () => {
   // Scrape all sites
   let overview = await scrape.scrapeOverview();
@@ -44,3 +64,16 @@ let runScraper = async () => {
 };
 
 // runScraper();
+
+// ********** MongoDB Merge ************ //
+let insertToMongoDB = async (data) => {
+  try {
+    // Insert all merged datat documents into Mongodb via Reactor Model
+    await Reactor.insertMany(data);
+    console.log('data logged');
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+// insertToMongoDB(reactorDataMerged);

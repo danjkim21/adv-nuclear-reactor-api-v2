@@ -1,30 +1,37 @@
-const { reactorDataMerged } = require('../db/data-merged');
+const Reactor = require('../models/Reactor');
 
-// path '/api/'
-// GETS the adv. reactors API - Not filtered
-const getAllReactorData = (req, res) => {
-  res.json(reactorDataMerged);
+module.exports = {
+  // path '/api/'
+  // GETS the adv. reactors API - Not filtered
+  getAllReactorData: async (req, res) => {
+    try {
+      const reactorDataAll = await Reactor.find();
+      const reactorCountAll = await Reactor.countDocuments();
+      console.log(`Data Availability: ${reactorCountAll} reactors`);
+      res.json(reactorDataAll);
+    } catch (err) {
+      console.error(err);
+      res.status(404).end();
+    }
+  },
+  // path '/api/:name'
+  // GETS the adv. reactors API - filtered by NAME
+  getReactor: async (req, res) => {
+    const reactorName = req.params.name;
+    console.log(`Entered: ${reactorName}`);
+    try {
+      const reactorDataOne = await Reactor.findOne({
+        name: reactorName,
+      }).collation({
+        // collation for case Insensitive Indexing
+        locale: 'en',
+        strength: 2,
+      });
+      console.log(reactorDataOne.name);
+      res.json(reactorDataOne);
+    } catch (err) {
+      console.error(err);
+      res.status(404).end();
+    }
+  },
 };
-
-// path '/api/:name'
-// GETS the adv. reactors API - filtered by NAME
-const getReactor = (req, res) => {
-  const reactorName = req.params.name.toLowerCase();
-  console.log(`Entered: ${reactorName}`);
-
-  if (
-    reactorDataMerged.filter(
-      (elem) => elem.name.toLowerCase() === reactorName.toLowerCase()
-    )
-  ) {
-    res.json(
-      reactorDataMerged.filter(
-        (elem) => elem.name.toLowerCase() === reactorName.toLowerCase()
-      )
-    );
-  } else {
-    res.status(404).end();
-  }
-};
-
-module.exports = { getAllReactorData, getReactor };
