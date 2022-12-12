@@ -8,7 +8,13 @@ const ReactorSchema = new mongoose.Schema({
   fullName: {
     type: String,
   },
+  nameWebsite: {
+    type: String,
+  },
   designOrg: {
+    type: String,
+  },
+  designOrgWebsite: {
     type: String,
   },
   coolant: {
