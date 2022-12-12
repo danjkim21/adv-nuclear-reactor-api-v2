@@ -1,17 +1,17 @@
 // ************** Modules ************** //
-const express = require("express");
+const express = require('express');
 const app = express();
-const mongoose = require("mongoose");
-const cors = require("cors");
-require("dotenv").config({ path: "./config/.env" });
+const mongoose = require('mongoose');
+const cors = require('cors');
+require('dotenv').config({ path: './config/.env' });
 
 // ************* Variables ************* //
 const port = process.env.PORT || 8000;
-const scrape = require("./scripts/scrape");
-const handleData = require("./scripts/dataMerge");
-const { reactorDataMerged } = require("./db/data-merged");
-const apiRoutes = require("./routes/apiRoutes");
-const Reactor = require("./models/Reactor.js");
+const scrape = require('./scripts/scrape');
+const handleData = require('./scripts/dataMerge');
+const { reactorDataMerged } = require('./db/data-merged');
+const apiRoutes = require('./routes/apiRoutes');
+const Reactor = require('./models/Reactor.js');
 
 // ************* Middleware ************ //
 app.use(cors());
@@ -40,7 +40,7 @@ const connectDB = async () => {
 connectDB();
 
 // *********** Routes/Pathing *********** //
-app.use("/api/", apiRoutes);
+app.use('/api/', apiRoutes);
 
 // ******* Web Scraper 1.1 (Cheerio + Puppeteer) ******* //
 let runScraper = async () => {
@@ -70,7 +70,7 @@ let insertToMongoDB = async (data) => {
   try {
     // Insert all merged datat documents into Mongodb via Reactor Model
     await Reactor.insertMany(data);
-    console.log("data logged");
+    console.log('data logged');
   } catch (err) {
     console.error(err);
   }

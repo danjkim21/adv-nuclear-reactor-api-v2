@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const ReactorSchema = new mongoose.Schema({
   name: {
@@ -148,4 +148,4 @@ const ReactorSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model("Reactor", ReactorSchema);
+module.exports = mongoose.model('Reactor', ReactorSchema);
