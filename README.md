@@ -84,7 +84,7 @@ This API can be accessed via [https://ardb.cyclic.app/api](https://ardb.cyclic.a
 ## Roadmap
 
 - [x] Finish building out the search reactor feature
-- [ ] Migrate json data to MongoDB
+- [x] Migrate json data to MongoDB
 - [ ] Refactor pupeteer/cheerio scripts for automated insertion of data into MongoDB
 - [ ] Interactive data table feature to sort reactors by specific item (eg. thermal output)
 - [ ] Feature to allow reactor developers to add reactor data
