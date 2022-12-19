@@ -55,6 +55,18 @@ The data for this API project was obtained by creating a custom web scraper scri
 
 This API can be accessed via [https://ardb.cyclic.app/api](https://ardb.cyclic.app/api) or as a local copy. To get a local copy up and running follow these simple example steps.
 
+### Endpoints
+
+1. Return full API database
+    ```
+    https://ardb.cyclic.app/api
+    ```
+2. Search API by Reactor Name
+    ```
+    https://ardb.cyclic.app/api/reactorName
+    ```
+
+
 ### Installation
 
 1. Clone the repo
