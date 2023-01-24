@@ -40,12 +40,12 @@ This project is the second iteration of the arDB ([Version One Link](https://git
 
 **Tech used:**
 
-- [React]()
+- [React](https://reactjs.org/)
 - [Node.js](https://nodejs.org/en/)
 - [Express](https://expressjs.com/)
 - [Puppeteer](https://github.com/puppeteer/puppeteer)
 - [Cheerio](https://cheerio.js.org/)
-- [Lodash]()
+- [Lodash](https://lodash.com/)
 
 The data for this API project was obtained by creating a custom web scraper script using Cheerio. At the moment, the scraper pulls data from the [International Atomic Energy Agency](https://aris.iaea.org/sites/overview.html) but the scraper will be enhanced to recieve multiple url inputs (if you have any quality sources, please let me know!).
 
@@ -58,14 +58,13 @@ This API can be accessed via [https://ardb.cyclic.app/api](https://ardb.cyclic.a
 ### Endpoints
 
 1. Return full API database
-    ```
-    https://ardb.cyclic.app/api
-    ```
+   ```
+   https://ardb.cyclic.app/api
+   ```
 2. Search API by Reactor Name
-    ```
-    https://ardb.cyclic.app/api/reactorName
-    ```
-
+   ```
+   https://ardb.cyclic.app/api/reactorName
+   ```
 
 ### Installation
 
