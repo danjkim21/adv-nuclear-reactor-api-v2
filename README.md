@@ -25,7 +25,9 @@
 
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
+<p align="center">
+  <img src="images/arDB-demo.gif" width="75%" alt="arDB demo gif"/>
+</p>
 
 As an energy wonk, I've notice how difficult it is find up to date information on advanced nuclear reactor designs. This project aims to aggregate information on all advanced nuclear reactor technologies that exist around the world. <br>
 
@@ -96,8 +98,8 @@ This API can be accessed via [https://ardb.cyclic.app/api](https://ardb.cyclic.a
 
 - [x] Finish building out the search reactor feature
 - [x] Migrate json data to MongoDB
+- [x] Interactive data table feature to sort reactors by specific item (eg. thermal output)
 - [ ] Refactor pupeteer/cheerio scripts for automated insertion of data into MongoDB
-- [ ] Interactive data table feature to sort reactors by specific item (eg. thermal output)
 - [ ] Feature to allow reactor developers to add reactor data
 - [ ] Refactor front end react and back end code
 
