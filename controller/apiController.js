@@ -41,7 +41,7 @@ module.exports = {
   // GETS the adv. reactors API - returns all unique reactor types
   getReactorsByType: async (req, res) => {
     const typeInput = req.params.type.toUpperCase();
-    console.log(`Entered: ${type}`);
+    console.log(`Entered: ${typeInput}`);
     try {
       const reactorsByType = await Reactor.find()
         .where('type')
