@@ -65,7 +65,15 @@ This API can be accessed via [https://ardb.cyclic.app/api](https://ardb.cyclic.a
    ```
 2. Search API by Reactor Name
    ```
-   https://ardb.cyclic.app/api/reactorName
+   https://ardb.cyclic.app/api/:reactorName
+   ```
+3. Return List of all Reactor Types
+   ```
+   https://ardb.cyclic.app/api/categories
+   ```
+4. Search API by Reactor Types
+   ```
+   https://ardb.cyclic.app/api/categories/:reactorType
    ```
 
 ### Installation
@@ -78,6 +86,11 @@ This API can be accessed via [https://ardb.cyclic.app/api](https://ardb.cyclic.a
    ```sh
    npm install
    ```
+
+** Important: **
+
+- `.env` file required: for the MongoDB cluster string, please contact the project maintainer for access.
+- Then create a `/config/.env` file with the cluster string as : `DB_STRING=<enter string here>`
 
 <!-- USAGE EXAMPLES -->
 
@@ -92,9 +105,9 @@ This API can be accessed via [https://ardb.cyclic.app/api](https://ardb.cyclic.a
    `localhost:3000`
    ```
 
-<!-- ROADMAP -->
+<!-- ROAD MAP -->
 
-## Roadmap
+## Road Map
 
 - [x] Finish building out the search reactor feature
 - [x] Migrate json data to MongoDB
