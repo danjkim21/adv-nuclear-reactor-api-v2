@@ -43,6 +43,11 @@ module.exports = {
     const typeInput = req.params.type.toUpperCase();
     console.log(`Entered: ${typeInput}`);
     try {
+      if (typeInput === 'ALL') {
+        const reactorDataAll = await Reactor.find();
+        res.json(reactorDataAll);
+      }
+
       const reactorsByType = await Reactor.find()
         .where('type')
         .equals(typeInput);
