@@ -40,7 +40,7 @@ module.exports = {
   // path '/api/categories/:type'
   // GETS the adv. reactors API - returns all unique reactor types
   getReactorsByType: async (req, res) => {
-    const typeInput = req.params.type.toUpperCase();
+    const typeInput = req.params.type.replace(/%20/g, ' ');
     console.log(`Entered: ${typeInput}`);
     try {
       if (typeInput === 'ALL') {
