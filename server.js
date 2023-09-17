@@ -95,7 +95,7 @@ let runScraper = async () => {
 // ********** MongoDB Merge ************ //
 let insertToMongoDB = async (data) => {
   try {
-    // Insert all merged datat documents into Mongodb via Reactor Model
+    // Insert all merged data documents into Mongodb via Reactor Model
     await Reactor.insertMany(data);
     console.log('data logged');
   } catch (err) {
