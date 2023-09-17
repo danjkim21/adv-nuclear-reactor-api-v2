@@ -3,6 +3,8 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 const cors = require('cors');
+const session = require('express-session');
+const MongoStore = require('connect-mongo');
 require('dotenv').config({ path: './config/.env' });
 
 // ************* Variables ************* //
@@ -11,7 +13,11 @@ const scrape = require('./scripts/scrape');
 const handleData = require('./scripts/dataMerge');
 const { reactorDataMerged } = require('./db/data-merged');
 const apiRoutes = require('./routes/apiRoutes');
+const authRoutes = require('./routes/authRoutes');
 const Reactor = require('./models/Reactor.js');
+
+// ***** Passport config ***** //
+const passport = require('./config/passport');
 
 // ************* Middleware ************ //
 app.use(cors());
@@ -39,8 +45,29 @@ const connectDB = async () => {
 };
 connectDB();
 
+// ***** Sessions ***** //
+// app.use(
+//   session({
+//     secret: 'keyboard cat',
+//     resave: false,
+//     saveUninitialized: false,
+//     store: new MongoStore({ mongooseConnection: mongoose.connection }),
+//   })
+// );
+app.use(
+  session({
+    secret: 'foo',
+    store: MongoStore.create({ mongoUrl: process.env.DB_STRING }),
+  })
+);
+
+// ***** Passport middleware ***** //
+app.use(passport.initialize());
+app.use(passport.session());
+
 // *********** Routes/Pathing *********** //
 app.use('/api/', apiRoutes);
+app.use('/auth', authRoutes);
 
 // ******* Web Scraper 1.1 (Cheerio + Puppeteer) ******* //
 let runScraper = async () => {
