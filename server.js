@@ -58,6 +58,8 @@ app.use(
   session({
     secret: 'foo',
     store: MongoStore.create({ mongoUrl: process.env.DB_STRING }),
+    resave: true,
+    saveUninitialized: true,
   })
 );
 
