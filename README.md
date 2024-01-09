@@ -48,8 +48,9 @@ This project is the second iteration of the arDB ([Version One Link](https://git
 - [Puppeteer](https://github.com/puppeteer/puppeteer)
 - [Cheerio](https://cheerio.js.org/)
 - [Lodash](https://lodash.com/)
+- [Render](https://render.com/)
 
-The data for this API project was obtained by creating a custom web scraper script using Cheerio. At the moment, the scraper pulls data from the [International Atomic Energy Agency](https://aris.iaea.org/sites/overview.html) but the scraper will be enhanced to recieve multiple url inputs (if you have any quality sources, please let me know!).
+The data for this API project was obtained by creating a custom web scraper script using Cheerio. At the moment, the scraper pulls data from the [International Atomic Energy Agency](https://aris.iaea.org/sites/overview.html) but the scraper will be enhanced to receive multiple url inputs (if you have any quality sources, please let me know!).
 
 <!-- GETTING STARTED -->
 
@@ -61,19 +62,19 @@ This API can be accessed via [https://ardb.cyclic.app/api](https://ardb.cyclic.a
 
 1. Return full API database
    ```
-   https://ardb.cyclic.app/api
+   https://ardb-api.onrender/api
    ```
 2. Search API by Reactor Name
    ```
-   https://ardb.cyclic.app/api/:reactorName
+   https://ardb-api.onrender/api/:reactorName
    ```
 3. Return List of all Reactor Types
    ```
-   https://ardb.cyclic.app/api/categories
+   https://ardb-api.onrender/api/categories
    ```
 4. Search API by Reactor Types
    ```
-   https://ardb.cyclic.app/api/categories/:reactorType
+   https://ardb-api.onrender/api/categories/:reactorType
    ```
 
 ### Installation
