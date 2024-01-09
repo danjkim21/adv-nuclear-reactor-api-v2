@@ -62,19 +62,19 @@ This API can be accessed via [https://ardb.cyclic.app/api](https://ardb.cyclic.a
 
 1. Return full API database
    ```
-   https://ardb-api.onrender/api
+   https://ardb-api.onrender.com/api
    ```
 2. Search API by Reactor Name
    ```
-   https://ardb-api.onrender/api/:reactorName
+   https://ardb-api.onrender.com/api/:reactorName
    ```
 3. Return List of all Reactor Types
    ```
-   https://ardb-api.onrender/api/categories
+   https://ardb-api.onrender.com/api/categories
    ```
 4. Search API by Reactor Types
    ```
-   https://ardb-api.onrender/api/categories/:reactorType
+   https://ardb-api.onrender.com/api/categories/:reactorType
    ```
 
 ### Installation
