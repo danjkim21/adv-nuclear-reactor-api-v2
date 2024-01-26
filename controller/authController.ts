@@ -1,6 +1,8 @@
+import { NextFunction, Request, Response } from 'express';
+
 const User = require('../models/User');
 
-exports.getCurrentUser = (req, res) => {
+exports.getCurrentUser = (req: Request, res: Response) => {
   console.log('current user: ', req.user);
   if (req.user) {
     res.json({ user: req.user });
@@ -9,7 +11,11 @@ exports.getCurrentUser = (req, res) => {
   }
 };
 
-exports.checkAlreadyRegistered = async (req, res, next) => {
+exports.checkAlreadyRegistered = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const { username } = req.body;
   const registered = await User.find({ username });
   if (registered[0] && registered[0]._id) {
@@ -19,13 +25,17 @@ exports.checkAlreadyRegistered = async (req, res, next) => {
   next();
 };
 
-exports.registerUser = async (req, res, next) => {
+exports.registerUser = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const { username, password } = req.body;
   await new User({ username, password }).save();
   next();
 };
 
-exports.login = (req, res) => {
+exports.login = (req: Request, res: Response) => {
   req.login(req.user, function (err) {
     if (err) {
       res.json({ error: err });
@@ -34,7 +44,7 @@ exports.login = (req, res) => {
   });
 };
 
-exports.logout = (req, res) => {
+exports.logout = (req: Request, res: Response) => {
   if (req.user) {
     req.logout();
     res.send({ msg: 'logged out' });

@@ -1,9 +1,11 @@
+import { Request, Response } from 'express';
+
 const Reactor = require('../models/Reactor');
 
 module.exports = {
   // path '/api/'
   // GETS the adv. reactors API - Not filtered
-  getAllReactorData: async (req, res) => {
+  getAllReactorData: async (req: Request, res: Response) => {
     try {
       const reactorDataAll = await Reactor.find();
       const reactorCountAll = await Reactor.countDocuments();
@@ -16,7 +18,7 @@ module.exports = {
   },
   // path '/api/categories'
   // GETS the adv. reactors API - returns all unique reactor types
-  getReactorTypes: async (req, res) => {
+  getReactorTypes: async (req: Request, res: Response) => {
     try {
       const reactorDataAll = await Reactor.find();
 
@@ -39,7 +41,7 @@ module.exports = {
   },
   // path '/api/categories/:type'
   // GETS the adv. reactors API - returns all unique reactor types
-  getReactorsByType: async (req, res) => {
+  getReactorsByType: async (req: Request, res: Response) => {
     const typeInput = req.params.type.replace(/%20/g, ' ');
     console.log(`Entered: ${typeInput}`);
     try {
@@ -59,7 +61,7 @@ module.exports = {
   },
   // path '/api/:name'
   // GETS the adv. reactors API - filtered by NAME
-  getReactor: async (req, res) => {
+  getReactor: async (req: Request, res: Response) => {
     const reactorName = req.params.name;
     console.log(`Entered: ${reactorName}`);
     try {

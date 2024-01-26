@@ -1,32 +1,33 @@
-import { ReactorType } from "./models/Reactor";
+import { Application } from 'express';
+import { ReactorType } from './models/Reactor';
 
 // ************** Modules ************** //
-const express = require("express");
-const app = express();
-const mongoose = require("mongoose");
-const cors = require("cors");
-const session = require("express-session");
-const MongoStore = require("connect-mongo");
-require("dotenv").config({ path: "./config/.env" });
+const express = require('express');
+const mongoose = require('mongoose');
+const cors = require('cors');
+const session = require('express-session');
+const MongoStore = require('connect-mongo');
+require('dotenv').config({ path: './config/.env' });
 
 // ************* Variables ************* //
+const app: Application = express();
 const port = process.env.PORT || 8000;
-const scrape = require("./scripts/scrape");
-const handleData = require("./scripts/dataMerge");
-const { reactorDataMerged } = require("./db/data-merged");
-const apiRoutes = require("./routes/apiRoutes");
-const authRoutes = require("./routes/authRoutes");
-const Reactor = require("./models/Reactor.ts");
+const scrape = require('./scripts/scrape');
+const handleData = require('./scripts/dataMerge');
+const { reactorDataMerged } = require('./db/data-merged');
+const apiRoutes = require('./routes/apiRoutes');
+const authRoutes = require('./routes/authRoutes');
+const Reactor = require('./models/Reactor.ts');
 
 // ***** Passport config ***** //
-const passport = require("./config/passport");
+const passport = require('./config/passport');
 
 // ************* Middleware ************ //
 app.use(cors());
 app.use(express.json());
 
 // ************* MongoDB Connection ************ //
-mongoose.set("strictQuery", false);
+mongoose.set('strictQuery', false);
 
 const connectDB = async (): Promise<void> => {
   try {
@@ -52,7 +53,7 @@ connectDB();
 // ***** Sessions ***** //
 app.use(
   session({
-    secret: "foo",
+    secret: 'foo',
     store: MongoStore.create({ mongoUrl: process.env.DB_STRING }),
     resave: true,
     saveUninitialized: true,
@@ -64,8 +65,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // *********** Routes/Pathing *********** //
-app.use("/api/", apiRoutes);
-app.use("/auth", authRoutes);
+app.use('/api/', apiRoutes);
+app.use('/auth', authRoutes);
 
 // ******* Web Scraper 1.1 (Cheerio + Puppeteer) ******* //
 const runScrapers = async (): Promise<void> => {
@@ -93,7 +94,7 @@ const insertToMongoDB = async (data: ReactorType[]): Promise<void> => {
   try {
     // Insert all merged data documents into Mongodb via Reactor Model
     await Reactor.insertMany(data);
-    console.log("data logged");
+    console.log('data logged');
   } catch (err) {
     console.error(err);
   }
