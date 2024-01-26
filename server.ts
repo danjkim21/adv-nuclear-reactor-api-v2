@@ -1,30 +1,34 @@
+import { ReactorType } from "./models/Reactor";
+
 // ************** Modules ************** //
-const express = require('express');
+const express = require("express");
 const app = express();
-const mongoose = require('mongoose');
-const cors = require('cors');
-const session = require('express-session');
-const MongoStore = require('connect-mongo');
-require('dotenv').config({ path: './config/.env' });
+const mongoose = require("mongoose");
+const cors = require("cors");
+const session = require("express-session");
+const MongoStore = require("connect-mongo");
+require("dotenv").config({ path: "./config/.env" });
 
 // ************* Variables ************* //
 const port = process.env.PORT || 8000;
-const scrape = require('./scripts/scrape');
-const handleData = require('./scripts/dataMerge');
-const { reactorDataMerged } = require('./db/data-merged');
-const apiRoutes = require('./routes/apiRoutes');
-const authRoutes = require('./routes/authRoutes');
-const Reactor = require('./models/Reactor.js');
+const scrape = require("./scripts/scrape");
+const handleData = require("./scripts/dataMerge");
+const { reactorDataMerged } = require("./db/data-merged");
+const apiRoutes = require("./routes/apiRoutes");
+const authRoutes = require("./routes/authRoutes");
+const Reactor = require("./models/Reactor.ts");
 
 // ***** Passport config ***** //
-const passport = require('./config/passport');
+const passport = require("./config/passport");
 
 // ************* Middleware ************ //
 app.use(cors());
 app.use(express.json());
 
 // ************* MongoDB Connection ************ //
-const connectDB = async () => {
+mongoose.set("strictQuery", false);
+
+const connectDB = async (): Promise<void> => {
   try {
     // ***** Connect to MongoDB ***** //
     const conn = await mongoose.connect(process.env.DB_STRING, {
@@ -46,17 +50,9 @@ const connectDB = async () => {
 connectDB();
 
 // ***** Sessions ***** //
-// app.use(
-//   session({
-//     secret: 'keyboard cat',
-//     resave: false,
-//     saveUninitialized: false,
-//     store: new MongoStore({ mongooseConnection: mongoose.connection }),
-//   })
-// );
 app.use(
   session({
-    secret: 'foo',
+    secret: "foo",
     store: MongoStore.create({ mongoUrl: process.env.DB_STRING }),
     resave: true,
     saveUninitialized: true,
@@ -68,19 +64,19 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // *********** Routes/Pathing *********** //
-app.use('/api/', apiRoutes);
-app.use('/auth', authRoutes);
+app.use("/api/", apiRoutes);
+app.use("/auth", authRoutes);
 
 // ******* Web Scraper 1.1 (Cheerio + Puppeteer) ******* //
-let runScraper = async () => {
+const runScrapers = async (): Promise<void> => {
   // Scrape all sites
-  let overview = await scrape.scrapeOverview();
-  let general = await scrape.scrapeGeneral();
-  let nsss = await scrape.scrapeNsss();
-  let rcs = await scrape.scrapeRcs();
-  let core = await scrape.scrapeCore();
-  let material = await scrape.scrapeMaterial();
-  let rpv = await scrape.scrapeRpv();
+  const overview = await scrape.scrapeOverview();
+  const general = await scrape.scrapeGeneral();
+  const nsss = await scrape.scrapeNsss();
+  const rcs = await scrape.scrapeRcs();
+  const core = await scrape.scrapeCore();
+  const material = await scrape.scrapeMaterial();
+  const rpv = await scrape.scrapeRpv();
 
   // Once all sites scraping are complete > merge the data into data-merged.js
   Promise.all([overview, general, nsss, rcs, core, material, rpv])
@@ -92,17 +88,16 @@ let runScraper = async () => {
     });
 };
 
-// runScraper();
-
 // ********** MongoDB Merge ************ //
-let insertToMongoDB = async (data) => {
+const insertToMongoDB = async (data: ReactorType[]): Promise<void> => {
   try {
     // Insert all merged data documents into Mongodb via Reactor Model
     await Reactor.insertMany(data);
-    console.log('data logged');
+    console.log("data logged");
   } catch (err) {
     console.error(err);
   }
 };
 
+// runScrapers();
 // insertToMongoDB(reactorDataMerged);
