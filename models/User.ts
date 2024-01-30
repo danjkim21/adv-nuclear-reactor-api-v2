@@ -1,8 +1,8 @@
 import { InferSchemaType } from 'mongoose';
 
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
 const bcrypt = require('bcryptjs');
+const Schema = mongoose.Schema;
 mongoose.promise = Promise;
 
 const UserSchema = new Schema({

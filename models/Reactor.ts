@@ -1,7 +1,9 @@
-import { InferSchemaType } from "mongoose";
-const mongoose = require("mongoose");
+import { InferSchemaType } from 'mongoose';
 
-const ReactorSchema = new mongoose.Schema(
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+
+const ReactorSchema = new Schema(
   {
     name: {
       type: String,
@@ -160,4 +162,4 @@ const ReactorSchema = new mongoose.Schema(
 
 export type ReactorType = InferSchemaType<typeof ReactorSchema>;
 
-module.exports = mongoose.model("Reactor", ReactorSchema);
+module.exports = mongoose.model('Reactor', ReactorSchema);
