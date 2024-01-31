@@ -24,7 +24,8 @@
     "mongoose": "^6.7.5",
     "passport": "^0.6.0",
     "passport-local": "^1.0.0",
-    "puppeteer-core": "^19.0.0"
+    "puppeteer": "^21.10.0",
+    "puppeteer-core": "^21.10.0"
   },
   "devDependencies": {
     "@types/express": "^4.17.21",

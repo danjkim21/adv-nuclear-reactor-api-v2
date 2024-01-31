@@ -2,6 +2,7 @@
 const fs = require('fs');
 const cheerio = require('cheerio');
 const puppeteer = require('puppeteer-core');
+const { executablePath } = require('puppeteer');
 
 // ******* Web Scraper 1.0 (Cheerio + Puppeteer) ******* //
 // Source data
@@ -19,7 +20,7 @@ const urls = {
 
 async function scrapeOverview() {
   // -- Run Puppeteer -- //
-  const browser = await puppeteer.launch();
+  const browser = await puppeteer.launch({ executablePath: executablePath() });
   const page = await browser.newPage();
   await page.goto(urls.overview);
 
@@ -89,7 +90,7 @@ async function scrapeOverview() {
 
   // Write reactorsList array in reactors-data.js file
   await fs.writeFile(
-    './backend/db/data-overview.js',
+    './db/data-overview.js',
     `exports.reactorDataOverview = ` + JSON.stringify(reactorsList, null, 2),
     (err) => {
       if (err) {
@@ -107,7 +108,7 @@ async function scrapeOverview() {
 }
 
 async function scrapeGeneral() {
-  const browser = await puppeteer.launch();
+  const browser = await puppeteer.launch({ executablePath: executablePath() });
   const page = await browser.newPage();
   await page.goto(urls.general);
 
@@ -162,7 +163,7 @@ async function scrapeGeneral() {
   // console.dir(reactorsList);
 
   await fs.writeFile(
-    './backend/db/data-general.js',
+    './db/data-general.js',
     `exports.reactorDataGeneral = ` + JSON.stringify(reactorsList, null, 2),
     (err) => {
       if (err) {
@@ -180,7 +181,7 @@ async function scrapeGeneral() {
 }
 
 async function scrapeNsss() {
-  const browser = await puppeteer.launch();
+  const browser = await puppeteer.launch({ executablePath: executablePath() });
   const page = await browser.newPage();
   await page.goto(urls.nsss);
 
@@ -231,7 +232,7 @@ async function scrapeNsss() {
   // console.dir(reactorsList);
 
   await fs.writeFile(
-    './backend/db/data-nsss.js',
+    './db/data-nsss.js',
     `exports.reactorDataNsss = ` + JSON.stringify(reactorsList, null, 2),
     (err) => {
       if (err) {
@@ -249,7 +250,7 @@ async function scrapeNsss() {
 }
 
 async function scrapeRcs() {
-  const browser = await puppeteer.launch();
+  const browser = await puppeteer.launch({ executablePath: executablePath() });
   const page = await browser.newPage();
   await page.goto(urls.rcs);
 
@@ -302,7 +303,7 @@ async function scrapeRcs() {
   // console.dir(reactorsList);
 
   await fs.writeFile(
-    './backend/db/data-rcs.js',
+    './db/data-rcs.js',
     `exports.reactorDataRcs = ` + JSON.stringify(reactorsList, null, 2),
     (err) => {
       if (err) {
@@ -320,7 +321,7 @@ async function scrapeRcs() {
 }
 
 async function scrapeCore() {
-  const browser = await puppeteer.launch();
+  const browser = await puppeteer.launch({ executablePath: executablePath() });
   const page = await browser.newPage();
   await page.goto(urls.core);
 
@@ -388,7 +389,7 @@ async function scrapeCore() {
   // console.dir(reactorsList);
 
   await fs.writeFile(
-    './backend/db/data-core.js',
+    './db/data-core.js',
     `exports.reactorDataCore = ` + JSON.stringify(reactorsList, null, 2),
     (err) => {
       if (err) {
@@ -406,7 +407,7 @@ async function scrapeCore() {
 }
 
 async function scrapeMaterial() {
-  const browser = await puppeteer.launch();
+  const browser = await puppeteer.launch({ executablePath: executablePath() });
   const page = await browser.newPage();
   await page.goto(urls.material);
 
@@ -475,7 +476,7 @@ async function scrapeMaterial() {
   // console.dir(reactorsList);
 
   await fs.writeFile(
-    './backend/db/data-material.js',
+    './db/data-material.js',
     `exports.reactorDataMaterial = ` + JSON.stringify(reactorsList, null, 2),
     (err) => {
       if (err) {
@@ -493,7 +494,7 @@ async function scrapeMaterial() {
 }
 
 async function scrapeRpv() {
-  const browser = await puppeteer.launch();
+  const browser = await puppeteer.launch({ executablePath: executablePath() });
   const page = await browser.newPage();
   await page.goto(urls.rpv);
 
@@ -547,7 +548,7 @@ async function scrapeRpv() {
   // console.dir(reactorsList);
 
   await fs.writeFile(
-    './backend/db/data-rpv.js',
+    './db/data-rpv.js',
     `exports.reactorDataRpv = ` + JSON.stringify(reactorsList, null, 2),
     (err) => {
       if (err) {
