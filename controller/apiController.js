@@ -5,7 +5,7 @@ module.exports = {
   // GETS the adv. reactors API - Not filtered
   getAllReactorData: async (req, res) => {
     try {
-      const reactorDataAll = await Reactor.find();
+      const reactorDataAll = await Reactor.find().sort();
       const reactorCountAll = await Reactor.countDocuments();
       console.log(`Data Availability: ${reactorCountAll} reactors`);
       res.json(reactorDataAll);
@@ -20,17 +20,10 @@ module.exports = {
     try {
       const reactorDataAll = await Reactor.find();
 
-      // Array of all unique reactor.type values
-      const reactorCategories = [];
-      const typeSet = new Set();
-
-      for (const reactor of reactorDataAll) {
-        const type = reactor.type;
-        if (!typeSet.has(type)) {
-          typeSet.add(type);
-          reactorCategories.push(type);
-        }
-      }
+      // Array of all unique reactor.type values, sorted Alphanumerically
+      const reactorCategories = [
+        ...new Set(reactorDataAll.map((reactor) => reactor.type).sort()),
+      ];
 
       res.json(reactorCategories);
     } catch (err) {
@@ -44,13 +37,14 @@ module.exports = {
     console.log(`Entered: ${typeInput}`);
     try {
       if (typeInput === 'ALL') {
-        const reactorDataAll = await Reactor.find();
+        const reactorDataAll = await Reactor.find().sort();
         res.json(reactorDataAll);
       }
 
       const reactorsByType = await Reactor.find()
         .where('type')
-        .equals(typeInput);
+        .equals(typeInput)
+        .sort();
 
       res.json(reactorsByType);
     } catch (err) {
