@@ -71,38 +71,38 @@ app.use(passport.session());
 app.use('/api/', apiRoutes);
 app.use('/auth', authRoutes);
 
-// ******* Web Scraper 1.1 (Cheerio + Puppeteer) ******* //
-let runScraper = async () => {
-  // Scrape all sites
-  let overview = await scrape.scrapeOverview();
-  let general = await scrape.scrapeGeneral();
-  let nsss = await scrape.scrapeNsss();
-  let rcs = await scrape.scrapeRcs();
-  let core = await scrape.scrapeCore();
-  let material = await scrape.scrapeMaterial();
-  let rpv = await scrape.scrapeRpv();
+// ******* Web Scraper 1.2 (Cheerio + Puppeteer) ******* //
+const runScrapers = async () => {
+  try {
+    await Promise.all([
+      scrapeOverview(),
+      scrapeGeneral(),
+      scrapeNsss(),
+      scrapeRcs(),
+      scrapeCore(),
+      scrapeMaterial(),
+      scrapeRpv(),
+    ]);
 
-  // Once all sites scraping are complete > merge the data into data-merged.js
-  Promise.all([overview, general, nsss, rcs, core, material, rpv])
-    .then(() => {
-      handleData.mergeData();
-    })
-    .catch((error) => {
-      console.error(error.message);
-    });
+    await mergeData();
+  } catch (error) {
+    console.error(error.message);
+  }
 };
 
-// runScraper();
-
 // ********** MongoDB Merge ************ //
-let insertToMongoDB = async (data) => {
+const insertToMongoDB = async (data) => {
   try {
     // Insert all merged data documents into Mongodb via Reactor Model
     await Reactor.insertMany(data);
-    console.log('data logged');
+    console.log('data inserted successfully');
   } catch (err) {
     console.error(err);
   }
 };
 
-// insertToMongoDB(reactorDataMerged);
+// IIFE - Run scrape and insertion in order
+// (async () => {
+//   await runScrapers();
+//   await insertToMongoDB(reactorDataMerged);
+// })();
