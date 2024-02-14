@@ -23,6 +23,7 @@
     "mongoose": "^6.7.5",
     "passport": "^0.6.0",
     "passport-local": "^1.0.0",
+    "puppeteer": "^22.0.0",
     "puppeteer-core": "^19.0.0"
   },
   "devDependencies": {
