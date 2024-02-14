@@ -105,7 +105,9 @@ const urls = {
 // Puppeteer config options
 const opts = {
   executablePath: executablePath(),
+  headless: true,
   args: ['--disable-application-cache', '--no-sandbox'],
+  ignoreDefaultArgs: ['--disable-extensions'],
 };
 
 async function scrapeOverview() {
