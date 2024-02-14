@@ -7,14 +7,12 @@ const session = require('express-session');
 const MongoStore = require('connect-mongo');
 require('dotenv').config({ path: './config/.env' });
 
-// ************* Variables ************* //
+// ************* Variables & Functions ************* //
 const port = process.env.PORT || 8000;
-const scrape = require('./scripts/scrape');
-const handleData = require('./scripts/dataMerge');
-const { reactorDataMerged } = require('./db/data-merged');
+const { handleScrape } = require('./scripts/scrape');
+const { insertToMongoDB } = require('./scripts/insertToMongoDb.js');
 const apiRoutes = require('./routes/apiRoutes');
 const authRoutes = require('./routes/authRoutes');
-const Reactor = require('./models/Reactor.js');
 
 // ***** Passport config ***** //
 const passport = require('./config/passport');
@@ -24,6 +22,8 @@ app.use(cors());
 app.use(express.json());
 
 // ************* MongoDB Connection ************ //
+mongoose.set('strictQuery', false);
+
 const connectDB = async () => {
   try {
     // ***** Connect to MongoDB ***** //
@@ -46,14 +46,6 @@ const connectDB = async () => {
 connectDB();
 
 // ***** Sessions ***** //
-// app.use(
-//   session({
-//     secret: 'keyboard cat',
-//     resave: false,
-//     saveUninitialized: false,
-//     store: new MongoStore({ mongooseConnection: mongoose.connection }),
-//   })
-// );
 app.use(
   session({
     secret: 'foo',
@@ -71,38 +63,11 @@ app.use(passport.session());
 app.use('/api/', apiRoutes);
 app.use('/auth', authRoutes);
 
-// ******* Web Scraper 1.2 (Cheerio + Puppeteer) ******* //
-const runScrapers = async () => {
-  try {
-    await Promise.all([
-      scrapeOverview(),
-      scrapeGeneral(),
-      scrapeNsss(),
-      scrapeRcs(),
-      scrapeCore(),
-      scrapeMaterial(),
-      scrapeRpv(),
-    ]);
-
-    await mergeData();
-  } catch (error) {
-    console.error(error.message);
-  }
-};
-
-// ********** MongoDB Merge ************ //
-const insertToMongoDB = async (data) => {
-  try {
-    // Insert all merged data documents into Mongodb via Reactor Model
-    await Reactor.insertMany(data);
-    console.log('data inserted successfully');
-  } catch (err) {
-    console.error(err);
-  }
-};
-
-// IIFE - Run scrape and insertion in order
+// ******* IIFE - Run scrape and insertion in order ******* //
+// TODO: Figure out how to move this to a cron job in Vercel
 // (async () => {
-//   await runScrapers();
-//   await insertToMongoDB(reactorDataMerged);
+// Web Scraper 1.2 (Cheerio + Puppeteer)
+// await handleScrape();
+// Merge `data-merged.js` to MongoDB
+// await insertToMongoDB(reactorDataMerged);
 // })();
