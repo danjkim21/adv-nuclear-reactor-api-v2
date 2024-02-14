@@ -3,6 +3,27 @@ const fs = require('fs');
 const cheerio = require('cheerio');
 const puppeteer = require('puppeteer-core');
 const { executablePath } = require('puppeteer');
+const { mergeData } = require('./dataMerge');
+
+const runScrapers = async () => {
+  console.log('running scrape');
+  try {
+    await Promise.all([
+      scrapeOverview(),
+      scrapeGeneral(),
+      scrapeNsss(),
+      scrapeRcs(),
+      scrapeCore(),
+      scrapeMaterial(),
+      scrapeRpv(),
+    ]);
+
+    await mergeData();
+    console.log('scrape complete - merging datasets');
+  } catch (error) {
+    console.error(error.message);
+  }
+};
 
 // ******* Web Scraper 1.0 (Cheerio + Puppeteer) ******* //
 // Source data
@@ -566,6 +587,7 @@ async function scrapeRpv() {
 }
 
 module.exports = {
+  runScrapers,
   scrapeOverview,
   scrapeGeneral,
   scrapeNsss,

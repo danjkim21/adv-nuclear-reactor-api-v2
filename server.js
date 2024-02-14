@@ -7,10 +7,11 @@ const session = require('express-session');
 const MongoStore = require('connect-mongo');
 require('dotenv').config({ path: './config/.env' });
 
-// ************* Variables ************* //
+// ************* Variables & Functions ************* //
 const port = process.env.PORT || 8000;
-const scrape = require('./scripts/scrape');
+const { runScrapers } = require('./scripts/scrape');
 const { mergeData } = require('./scripts/dataMerge');
+const { insertToMongoDB } = require('./scripts/insertToMongoDb.js');
 const { reactorDataMerged } = require('./db/data-merged');
 const apiRoutes = require('./routes/apiRoutes');
 const authRoutes = require('./routes/authRoutes');
@@ -25,6 +26,7 @@ app.use(express.json());
 
 // ************* MongoDB Connection ************ //
 mongoose.set('strictQuery', false);
+
 const connectDB = async () => {
   try {
     // ***** Connect to MongoDB ***** //
@@ -64,39 +66,11 @@ app.use(passport.session());
 app.use('/api/', apiRoutes);
 app.use('/auth', authRoutes);
 
-// ******* Web Scraper 1.2 (Cheerio + Puppeteer) ******* //
-const runScrapers = async () => {
-  console.log('running');
-  try {
-    await Promise.all([
-      scrape.scrapeOverview(),
-      scrape.scrapeGeneral(),
-      scrape.scrapeNsss(),
-      scrape.scrapeRcs(),
-      scrape.scrapeCore(),
-      scrape.scrapeMaterial(),
-      scrape.scrapeRpv(),
-    ]);
-
-    await mergeData();
-  } catch (error) {
-    console.error(error.message);
-  }
-};
-
-// ********** MongoDB Merge ************ //
-const insertToMongoDB = async (data) => {
-  try {
-    // Insert all merged data documents into Mongodb via Reactor Model
-    await Reactor.insertMany(data);
-    console.log('data inserted successfully');
-  } catch (err) {
-    console.error(err);
-  }
-};
-
-// IIFE - Run scrape and insertion in order
+// ******* IIFE - Run scrape and insertion in order ******* //
+// TODO: Figure out how to move this to a cron job in Vercel
 (async () => {
+  // Web Scraper 1.2 (Cheerio + Puppeteer)
   await runScrapers();
-  //   await insertToMongoDB(reactorDataMerged);
+  // Merge `data-merged.js` to MongoDB
+  await insertToMongoDB(reactorDataMerged);
 })();

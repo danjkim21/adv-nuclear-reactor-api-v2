@@ -33,11 +33,11 @@ async function mergeData() {
         console.error(err);
         return;
       }
-      console.log('Successfully merged data');
+      console.log(
+        `Merge completed. ${reactorsList.length} added to data-merged.js`
+      );
     }
   );
-
-  console.log(`Merge completed. ${reactorsList.length} added`);
 }
 
 exports.mergeData = mergeData;
