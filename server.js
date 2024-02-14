@@ -10,7 +10,7 @@ require('dotenv').config({ path: './config/.env' });
 // ************* Variables ************* //
 const port = process.env.PORT || 8000;
 const scrape = require('./scripts/scrape');
-const handleData = require('./scripts/dataMerge');
+const { mergeData } = require('./scripts/dataMerge');
 const { reactorDataMerged } = require('./db/data-merged');
 const apiRoutes = require('./routes/apiRoutes');
 const authRoutes = require('./routes/authRoutes');
@@ -24,6 +24,7 @@ app.use(cors());
 app.use(express.json());
 
 // ************* MongoDB Connection ************ //
+mongoose.set('strictQuery', false);
 const connectDB = async () => {
   try {
     // ***** Connect to MongoDB ***** //
@@ -46,14 +47,6 @@ const connectDB = async () => {
 connectDB();
 
 // ***** Sessions ***** //
-// app.use(
-//   session({
-//     secret: 'keyboard cat',
-//     resave: false,
-//     saveUninitialized: false,
-//     store: new MongoStore({ mongooseConnection: mongoose.connection }),
-//   })
-// );
 app.use(
   session({
     secret: 'foo',
@@ -73,15 +66,16 @@ app.use('/auth', authRoutes);
 
 // ******* Web Scraper 1.2 (Cheerio + Puppeteer) ******* //
 const runScrapers = async () => {
+  console.log('running');
   try {
     await Promise.all([
-      scrapeOverview(),
-      scrapeGeneral(),
-      scrapeNsss(),
-      scrapeRcs(),
-      scrapeCore(),
-      scrapeMaterial(),
-      scrapeRpv(),
+      scrape.scrapeOverview(),
+      scrape.scrapeGeneral(),
+      scrape.scrapeNsss(),
+      scrape.scrapeRcs(),
+      scrape.scrapeCore(),
+      scrape.scrapeMaterial(),
+      scrape.scrapeRpv(),
     ]);
 
     await mergeData();
@@ -102,7 +96,7 @@ const insertToMongoDB = async (data) => {
 };
 
 // IIFE - Run scrape and insertion in order
-// (async () => {
-//   await runScrapers();
-//   await insertToMongoDB(reactorDataMerged);
-// })();
+(async () => {
+  await runScrapers();
+  //   await insertToMongoDB(reactorDataMerged);
+})();

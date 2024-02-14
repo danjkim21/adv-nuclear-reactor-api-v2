@@ -26,7 +26,7 @@ async function mergeData() {
   // console.log(reactorsList);
 
   await fs.writeFile(
-    './backend/db/data-merged.js',
+    './db/data-merged.js',
     `exports.reactorDataMerged = ` + JSON.stringify(reactorsList, null, 2),
     (err) => {
       if (err) {
