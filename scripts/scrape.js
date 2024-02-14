@@ -102,10 +102,15 @@ const urls = {
 };
 
 // ******* Scrape Functions ******* //
+// Puppeteer config options
+const opts = {
+  executablePath: executablePath(),
+  args: ['--disable-application-cache', '--no-sandbox'],
+};
 
 async function scrapeOverview() {
   // -- Run Puppeteer -- //
-  const browser = await puppeteer.launch({ executablePath: executablePath() });
+  const browser = await puppeteer.launch(opts);
   const page = await browser.newPage();
   await page.goto(urls.overview);
 
@@ -178,7 +183,7 @@ async function scrapeOverview() {
 }
 
 async function scrapeGeneral() {
-  const browser = await puppeteer.launch({ executablePath: executablePath() });
+  const browser = await puppeteer.launch(opts);
   const page = await browser.newPage();
   await page.goto(urls.general);
 
@@ -239,7 +244,7 @@ async function scrapeGeneral() {
 }
 
 async function scrapeNsss() {
-  const browser = await puppeteer.launch({ executablePath: executablePath() });
+  const browser = await puppeteer.launch(opts);
   const page = await browser.newPage();
   await page.goto(urls.nsss);
 
@@ -296,7 +301,7 @@ async function scrapeNsss() {
 }
 
 async function scrapeRcs() {
-  const browser = await puppeteer.launch({ executablePath: executablePath() });
+  const browser = await puppeteer.launch(opts);
   const page = await browser.newPage();
   await page.goto(urls.rcs);
 
@@ -355,7 +360,7 @@ async function scrapeRcs() {
 }
 
 async function scrapeCore() {
-  const browser = await puppeteer.launch({ executablePath: executablePath() });
+  const browser = await puppeteer.launch(opts);
   const page = await browser.newPage();
   await page.goto(urls.core);
 
@@ -429,7 +434,7 @@ async function scrapeCore() {
 }
 
 async function scrapeMaterial() {
-  const browser = await puppeteer.launch({ executablePath: executablePath() });
+  const browser = await puppeteer.launch(opts);
   const page = await browser.newPage();
   await page.goto(urls.material);
 
@@ -504,7 +509,7 @@ async function scrapeMaterial() {
 }
 
 async function scrapeRpv() {
-  const browser = await puppeteer.launch({ executablePath: executablePath() });
+  const browser = await puppeteer.launch(opts);
   const page = await browser.newPage();
   await page.goto(urls.rpv);
 
