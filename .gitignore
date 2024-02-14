@@ -24,6 +24,6 @@ dist-ssr
 *.sw?
 .mongodb
 
+db
 .env
-
 .vercel
