@@ -17,7 +17,7 @@
     <br />
     <a href="https://ardb.vercel.app/">View Client Site</a>
     ·
-    <a href="https://ardb.cyclic.app/api">View API Site</a>
+    <a href="https://api-ardb.vercel.app/api">View API Site</a>
   </p>
 </div>
 
@@ -56,25 +56,25 @@ The data for this API project was obtained by creating a custom web scraper scri
 
 ## Getting Started
 
-This API can be accessed via [https://ardb.cyclic.app/api](https://ardb.cyclic.app/api) or as a local copy. To get a local copy up and running follow these simple example steps.
+This API can be accessed via [https://api-ardb.vercel.app/api](https://api-ardb.vercel.app/api) or as a local copy. To get a local copy up and running follow these simple example steps.
 
 ### Endpoints
 
 1. Return full API database
    ```
-   https://ardb1.cyclic.app/api
+   https://api-ardb.vercel.app/api
    ```
 2. Search API by Reactor Name
    ```
-   https://ardb1.cyclic.app/api/:reactorName
+   https://api-ardb.vercel.app/api/:reactorName
    ```
 3. Return List of all Reactor Types
    ```
-   https://ardb1.cyclic.app/api/categories
+   https://api-ardb.vercel.app/api/categories
    ```
 4. Search API by Reactor Types
    ```
-   https://ardb1.cyclic.app/api/categories/:reactorType
+   https://api-ardb.vercel.app/api/categories/:reactorType
    ```
 
 ### Installation
