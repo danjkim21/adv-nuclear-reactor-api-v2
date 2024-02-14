@@ -17,7 +17,6 @@ const handleScrape = async () => {
     reactorsListRpv,
   } = await runScrappers();
 
-  // await mergeData();
   const reactorsListMerged = await mergeData(
     reactorsListOverview,
     reactorsListCore,
