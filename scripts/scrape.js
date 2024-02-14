@@ -1,5 +1,6 @@
 // ************** Modules ************** //
 const _ = require('lodash-core');
+const chromium = require('@sparticuz/chromium-min');
 const cheerio = require('cheerio');
 const puppeteer = require('puppeteer-core');
 const { executablePath } = require('puppeteer');
@@ -102,17 +103,24 @@ const urls = {
 };
 
 // ******* Scrape Functions ******* //
-// Puppeteer config options
-const opts = {
-  executablePath: executablePath(),
-  headless: true,
-  args: ['--disable-application-cache', '--no-sandbox'],
-  ignoreDefaultArgs: ['--disable-extensions'],
-};
-
+// Puppeteer Browser Launch with config options
+async function getBrowser() {
+  // local development is broken for this 👇
+  // but it works in vercel so I'm not gonna touch it
+  // see: https://www.stefanjudis.com/blog/how-to-use-headless-chrome-in-serverless-functions/
+  return puppeteer.launch({
+    args: [...chromium.args, '--hide-scrollbars', '--disable-web-security'],
+    defaultViewport: chromium.defaultViewport,
+    executablePath: await chromium.executablePath(
+      `https://github.com/Sparticuz/chromium/releases/download/v116.0.0/chromium-v116.0.0-pack.tar`
+    ),
+    headless: chromium.headless,
+    ignoreHTTPSErrors: true,
+  });
+}
 async function scrapeOverview() {
   // -- Run Puppeteer -- //
-  const browser = await puppeteer.launch(opts);
+  const browser = await getBrowser();
   const page = await browser.newPage();
   await page.goto(urls.overview);
 
@@ -185,7 +193,7 @@ async function scrapeOverview() {
 }
 
 async function scrapeGeneral() {
-  const browser = await puppeteer.launch(opts);
+  const browser = await getBrowser();
   const page = await browser.newPage();
   await page.goto(urls.general);
 
@@ -246,7 +254,7 @@ async function scrapeGeneral() {
 }
 
 async function scrapeNsss() {
-  const browser = await puppeteer.launch(opts);
+  const browser = await getBrowser();
   const page = await browser.newPage();
   await page.goto(urls.nsss);
 
@@ -303,7 +311,7 @@ async function scrapeNsss() {
 }
 
 async function scrapeRcs() {
-  const browser = await puppeteer.launch(opts);
+  const browser = await getBrowser();
   const page = await browser.newPage();
   await page.goto(urls.rcs);
 
@@ -362,7 +370,7 @@ async function scrapeRcs() {
 }
 
 async function scrapeCore() {
-  const browser = await puppeteer.launch(opts);
+  const browser = await getBrowser();
   const page = await browser.newPage();
   await page.goto(urls.core);
 
@@ -436,7 +444,7 @@ async function scrapeCore() {
 }
 
 async function scrapeMaterial() {
-  const browser = await puppeteer.launch(opts);
+  const browser = await getBrowser();
   const page = await browser.newPage();
   await page.goto(urls.material);
 
@@ -511,7 +519,7 @@ async function scrapeMaterial() {
 }
 
 async function scrapeRpv() {
-  const browser = await puppeteer.launch(opts);
+  const browser = await getBrowser();
   const page = await browser.newPage();
   await page.goto(urls.rpv);
 
