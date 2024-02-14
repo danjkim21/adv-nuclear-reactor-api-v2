@@ -9,7 +9,7 @@ require('dotenv').config({ path: './config/.env' });
 
 // ************* Variables & Functions ************* //
 const port = process.env.PORT || 8000;
-const { runScrapers } = require('./scripts/scrape');
+const { handleScrape } = require('./scripts/scrape');
 const { mergeData } = require('./scripts/dataMerge');
 const { insertToMongoDB } = require('./scripts/insertToMongoDb.js');
 const { reactorDataMerged } = require('./db/data-merged');
@@ -68,9 +68,9 @@ app.use('/auth', authRoutes);
 
 // ******* IIFE - Run scrape and insertion in order ******* //
 // TODO: Figure out how to move this to a cron job in Vercel
-// (async () => {
-// Web Scraper 1.2 (Cheerio + Puppeteer)
-// await runScrapers();
-// Merge `data-merged.js` to MongoDB
-// await insertToMongoDB(reactorDataMerged);
-// })();
+(async () => {
+  // Web Scraper 1.2 (Cheerio + Puppeteer)
+  await handleScrape();
+  // Merge `data-merged.js` to MongoDB
+  // await insertToMongoDB(reactorDataMerged);
+})();

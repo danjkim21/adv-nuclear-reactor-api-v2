@@ -1,25 +1,90 @@
 // ************** Modules ************** //
-const fs = require('fs');
+const _ = require('lodash-core');
 const cheerio = require('cheerio');
 const puppeteer = require('puppeteer-core');
 const { executablePath } = require('puppeteer');
-const { mergeData } = require('./dataMerge');
+const { insertToMongoDB } = require('./insertToMongoDb');
 
-const runScrapers = async () => {
-  console.log('running scrape');
+const handleScrape = async () => {
+  console.log('running script');
+  const {
+    reactorsListOverview,
+    reactorsListCore,
+    reactorsListGeneral,
+    reactorsListMaterial,
+    reactorsListNsss,
+    reactorsListRcs,
+    reactorsListRpv,
+  } = await runScrappers();
+
+  // await mergeData();
+  const reactorsListMerged = await mergeData(
+    reactorsListOverview,
+    reactorsListCore,
+    reactorsListGeneral,
+    reactorsListMaterial,
+    reactorsListNsss,
+    reactorsListRcs,
+    reactorsListRpv
+  );
+
+  await insertToMongoDB(reactorsListMerged);
+};
+
+const runScrappers = async () => {
+  console.log('running scrapers');
   try {
-    await Promise.all([
-      scrapeOverview(),
-      scrapeGeneral(),
-      scrapeNsss(),
-      scrapeRcs(),
-      scrapeCore(),
-      scrapeMaterial(),
-      scrapeRpv(),
-    ]);
+    const { reactorsList: reactorsListOverview } = await scrapeOverview();
+    const { reactorsList: reactorsListCore } = await scrapeCore();
+    const { reactorsList: reactorsListGeneral } = await scrapeGeneral();
+    const { reactorsList: reactorsListMaterial } = await scrapeMaterial();
+    const { reactorsList: reactorsListNsss } = await scrapeNsss();
+    const { reactorsList: reactorsListRcs } = await scrapeRcs();
+    const { reactorsList: reactorsListRpv } = await scrapeRpv();
 
-    await mergeData();
-    console.log('scrape complete - merging datasets');
+    return {
+      reactorsListOverview,
+      reactorsListCore,
+      reactorsListGeneral,
+      reactorsListMaterial,
+      reactorsListNsss,
+      reactorsListRcs,
+      reactorsListRpv,
+    };
+  } catch (error) {
+    console.error(error.message);
+  }
+};
+
+const mergeData = async (
+  reactorsListOverview,
+  reactorsListCore,
+  reactorsListGeneral,
+  reactorsListMaterial,
+  reactorsListNsss,
+  reactorsListRcs,
+  reactorsListRpv
+) => {
+  console.log('scrape complete - merging datasets');
+  try {
+    const reactorsListMerged = await _(reactorsListOverview)
+      .concat(
+        reactorsListCore,
+        reactorsListGeneral,
+        reactorsListMaterial,
+        reactorsListNsss,
+        reactorsListRcs,
+        reactorsListRpv
+      )
+      .groupBy('name')
+      .map(_.spread(_.merge))
+      .value();
+
+    console.log(
+      `Merge completed. ${reactorsListMerged.length} added to data-merged.js`
+    );
+
+    return reactorsListMerged;
   } catch (error) {
     console.error(error.message);
   }
@@ -51,7 +116,6 @@ async function scrapeOverview() {
       html: document.documentElement.innerHTML,
     };
   });
-  // console.log(pageData);
 
   // -- Run Cheerio -- //
   // Parse pageData from puppeteer through cheerio
@@ -106,26 +170,12 @@ async function scrapeOverview() {
     reactorsList.push(reactorDesign);
   });
 
-  // Logs reactorsList array to the console
-  // console.dir(reactorsList);
-
-  // Write reactorsList array in reactors-data.js file
-  await fs.writeFile(
-    './db/data-overview.js',
-    `exports.reactorDataOverview = ` + JSON.stringify(reactorsList, null, 2),
-    (err) => {
-      if (err) {
-        console.error(err);
-        return;
-      }
-      console.log('Successfully written data to data-overview.js');
-    }
-  );
-
   console.log(
     `Scrape completed. ${reactorsList.length} objects added to data-overview.js`
   );
   await browser.close();
+
+  return { reactorsList };
 }
 
 async function scrapeGeneral() {
@@ -181,24 +231,12 @@ async function scrapeGeneral() {
     reactorsList.push(reactorDesign);
   });
 
-  // console.dir(reactorsList);
-
-  await fs.writeFile(
-    './db/data-general.js',
-    `exports.reactorDataGeneral = ` + JSON.stringify(reactorsList, null, 2),
-    (err) => {
-      if (err) {
-        console.error(err);
-        return;
-      }
-      console.log('Successfully written data to data-general.js');
-    }
-  );
-
   console.log(
     `Scrape completed. ${reactorsList.length} objects added to data-general.js`
   );
   await browser.close();
+
+  return { reactorsList };
 }
 
 async function scrapeNsss() {
@@ -250,24 +288,12 @@ async function scrapeNsss() {
     reactorsList.push(reactorDesign);
   });
 
-  // console.dir(reactorsList);
-
-  await fs.writeFile(
-    './db/data-nsss.js',
-    `exports.reactorDataNsss = ` + JSON.stringify(reactorsList, null, 2),
-    (err) => {
-      if (err) {
-        console.error(err);
-        return;
-      }
-      console.log('Successfully written data to data-nsss.js');
-    }
-  );
-
   console.log(
     `Scrape completed. ${reactorsList.length} objects added to data-nsss.js'`
   );
   await browser.close();
+
+  return { reactorsList };
 }
 
 async function scrapeRcs() {
@@ -321,24 +347,12 @@ async function scrapeRcs() {
     reactorsList.push(reactorDesign);
   });
 
-  // console.dir(reactorsList);
-
-  await fs.writeFile(
-    './db/data-rcs.js',
-    `exports.reactorDataRcs = ` + JSON.stringify(reactorsList, null, 2),
-    (err) => {
-      if (err) {
-        console.error(err);
-        return;
-      }
-      console.log('Successfully written data to data-rcs.js');
-    }
-  );
-
   console.log(
     `Scrape completed. ${reactorsList.length} objects added to data-rcs.js'`
   );
   await browser.close();
+
+  return { reactorsList };
 }
 
 async function scrapeCore() {
@@ -407,24 +421,12 @@ async function scrapeCore() {
     reactorsList.push(reactorDesign);
   });
 
-  // console.dir(reactorsList);
-
-  await fs.writeFile(
-    './db/data-core.js',
-    `exports.reactorDataCore = ` + JSON.stringify(reactorsList, null, 2),
-    (err) => {
-      if (err) {
-        console.error(err);
-        return;
-      }
-      console.log('Successfully written data to data-core.js');
-    }
-  );
-
   console.log(
     `Scrape completed. ${reactorsList.length} objects added to data-core.js'`
   );
   await browser.close();
+
+  return { reactorsList };
 }
 
 async function scrapeMaterial() {
@@ -494,24 +496,12 @@ async function scrapeMaterial() {
     reactorsList.push(reactorDesign);
   });
 
-  // console.dir(reactorsList);
-
-  await fs.writeFile(
-    './db/data-material.js',
-    `exports.reactorDataMaterial = ` + JSON.stringify(reactorsList, null, 2),
-    (err) => {
-      if (err) {
-        console.error(err);
-        return;
-      }
-      console.log('Successfully written data to data-material.js');
-    }
-  );
-
   console.log(
     `Scrape completed. ${reactorsList.length} objects added to data-material.js'`
   );
   await browser.close();
+
+  return { reactorsList };
 }
 
 async function scrapeRpv() {
@@ -566,28 +556,16 @@ async function scrapeRpv() {
     reactorsList.push(reactorDesign);
   });
 
-  // console.dir(reactorsList);
-
-  await fs.writeFile(
-    './db/data-rpv.js',
-    `exports.reactorDataRpv = ` + JSON.stringify(reactorsList, null, 2),
-    (err) => {
-      if (err) {
-        console.error(err);
-        return;
-      }
-      console.log('Successfully written data to data-rpv.js');
-    }
-  );
-
   console.log(
     `Scrape completed. ${reactorsList.length} objects added to data-rpv.js'`
   );
   await browser.close();
+
+  return { reactorsList };
 }
 
 module.exports = {
-  runScrapers,
+  handleScrape,
   scrapeOverview,
   scrapeGeneral,
   scrapeNsss,
