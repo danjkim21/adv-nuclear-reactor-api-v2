@@ -10,12 +10,9 @@ require('dotenv').config({ path: './config/.env' });
 // ************* Variables & Functions ************* //
 const port = process.env.PORT || 8000;
 const { handleScrape } = require('./scripts/scrape');
-const { mergeData } = require('./scripts/dataMerge');
 const { insertToMongoDB } = require('./scripts/insertToMongoDb.js');
-const { reactorDataMerged } = require('./db/data-merged');
 const apiRoutes = require('./routes/apiRoutes');
 const authRoutes = require('./routes/authRoutes');
-const Reactor = require('./models/Reactor.js');
 
 // ***** Passport config ***** //
 const passport = require('./config/passport');
