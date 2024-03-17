@@ -1,4 +1,4 @@
-const Reactor = require('../models/Reactor');
+const Reactor = require("../models/Reactor");
 
 module.exports = {
   // path '/api/'
@@ -33,16 +33,16 @@ module.exports = {
   // path '/api/categories/:type'
   // GETS the adv. reactors API - returns all unique reactor types
   getReactorsByType: async (req, res) => {
-    const typeInput = req.params.type.replace(/%20/g, ' ');
+    const typeInput = req.params.type.replace(/%20/g, " ");
     console.log(`Entered: ${typeInput}`);
     try {
-      if (typeInput === 'ALL') {
+      if (typeInput === "ALL") {
         const reactorDataAll = await Reactor.find().sort();
         res.json(reactorDataAll);
       }
 
       const reactorsByType = await Reactor.find()
-        .where('type')
+        .where("type")
         .equals(typeInput)
         .sort();
 
@@ -61,7 +61,7 @@ module.exports = {
         name: reactorName,
       }).collation({
         // collation for case Insensitive Indexing
-        locale: 'en',
+        locale: "en",
         strength: 2,
       });
       console.log(reactorDataOne.name);
@@ -70,5 +70,10 @@ module.exports = {
       console.error(err);
       res.status(404).end();
     }
+  },
+  // path '/api/size/:output'
+  // GETS the adv. reactors API - filtered by output
+  getReactorsBySize: async (req, res) => {
+    // TODO: add filtering logic = less than, greater than, etc.
   },
 };
