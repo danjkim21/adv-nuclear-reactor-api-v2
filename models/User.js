@@ -14,6 +14,28 @@ const userSchema = new Schema({
     unique: false,
     required: false,
   },
+  email: {
+    type: String,
+    unique: true,
+    required: false,
+  },
+  role: {
+    type: String,
+    default: 'user',
+    unique: false,
+    required: false,
+  },
+  verified: {
+    type: Boolean,
+    default: false,
+    unique: false,
+    required: true,
+  },
+  organization: {
+    type: String,
+    unique: false,
+    required: false,
+  },
 });
 
 userSchema.methods = {
