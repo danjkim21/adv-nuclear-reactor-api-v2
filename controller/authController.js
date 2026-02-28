@@ -1,44 +1,64 @@
 const User = require('../models/User');
 
 exports.getCurrentUser = (req, res) => {
-  console.log('current user: ', req.user);
   if (req.user) {
-    res.json({ user: req.user });
+    const { password, ...safeUser } = req.user.toObject();
+    res.json({ user: safeUser });
   } else {
     res.json({ user: null });
   }
 };
 
 exports.checkAlreadyRegistered = async (req, res, next) => {
-  const { username } = req.body;
-  const registered = await User.find({ username });
-  if (registered[0] && registered[0]._id) {
-    res.json({ error: `Sorry, already a user with the username: ${username}` });
-    return;
+  try {
+    const { username, email } = req.body;
+    if (!username || typeof username !== 'string' || username.trim().length === 0) {
+      return res.status(400).json({ error: 'Username is required' });
+    }
+    const query = email ? { $or: [{ username }, { email }] } : { username };
+    const registered = await User.findOne(query);
+    if (registered) {
+      res.json({ error: `Sorry, already a user with the username: ${username}` });
+      return;
+    }
+    next();
+  } catch (err) {
+    res.status(500).json({ error: 'Server error during registration check' });
   }
-  next();
 };
 
 exports.registerUser = async (req, res, next) => {
-  const { username, password } = req.body;
-  await new User({ username, password }).save();
-  next();
+  try {
+    const { username, password, email, organization } = req.body;
+    if (!password || typeof password !== 'string' || password.length < 6) {
+      return res.status(400).json({ error: 'Password must be at least 6 characters' });
+    }
+    await new User({ username, password, email, organization }).save();
+    next();
+  } catch (err) {
+    res.status(500).json({ error: 'Error creating user' });
+  }
 };
 
 exports.login = (req, res) => {
   req.login(req.user, function (err) {
     if (err) {
-      res.json({ error: err });
+      return res.status(500).json({ error: err });
     }
-    return res.send(req.user);
+    const { password, ...safeUser } = req.user.toObject();
+    return res.json(safeUser);
   });
 };
 
 exports.logout = (req, res) => {
   if (req.user) {
-    req.logout();
-    res.send({ msg: 'logged out' });
+    req.logout(function (err) {
+      if (err) {
+        return res.status(500).json({ error: 'Error logging out' });
+      }
+      res.json({ msg: 'logged out' });
+    });
   } else {
-    res.send({ msg: 'no user to log out' });
+    res.json({ msg: 'no user to log out' });
   }
 };
