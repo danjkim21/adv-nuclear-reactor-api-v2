@@ -13,8 +13,10 @@ exports.getAllUsers = async (req, res) => {
   if (!req.user) {
     return res.status(401).json({ error: 'Not authenticated' });
   }
-  if (!req.user.verified) {
-    return res.status(403).json({ error: 'User is not verified' });
+  if (req.user.role !== 'admin') {
+    return res
+      .status(403)
+      .json({ error: 'User is not permitted to perform this operation' });
   }
   try {
     const users = await User.find({}, '-password');
