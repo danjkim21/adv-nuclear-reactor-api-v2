@@ -5,6 +5,7 @@ const passport = require('../config/passport');
 const authController = require('../controller/authController');
 
 router.get('/', authController.getCurrentUser);
+router.get('/users', authController.getAllUsers);
 router.post(
   '/register',
   authController.checkAlreadyRegistered,
