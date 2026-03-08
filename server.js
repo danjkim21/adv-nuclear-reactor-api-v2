@@ -18,8 +18,25 @@ const authRoutes = require('./routes/authRoutes');
 const passport = require('./config/passport');
 
 // ************* Middleware ************ //
-app.use(cors());
+app.use(cors({
+  origin: process.env.CLIENT_URL || 'http://localhost:3000',
+  credentials: true,
+}));
 app.use(express.json());
+
+// ***** Sessions ***** //
+app.use(
+  session({
+    secret: 'foo',
+    store: MongoStore.create({ mongoUrl: process.env.DB_STRING }),
+    resave: true,
+    saveUninitialized: true,
+  })
+);
+
+// ***** Passport middleware ***** //
+app.use(passport.initialize());
+app.use(passport.session());
 
 // ************* MongoDB Connection ************ //
 mongoose.set('strictQuery', false);
@@ -44,20 +61,6 @@ const connectDB = async () => {
   }
 };
 connectDB();
-
-// ***** Sessions ***** //
-app.use(
-  session({
-    secret: 'foo',
-    store: MongoStore.create({ mongoUrl: process.env.DB_STRING }),
-    resave: true,
-    saveUninitialized: true,
-  })
-);
-
-// ***** Passport middleware ***** //
-app.use(passport.initialize());
-app.use(passport.session());
 
 // *********** Routes/Pathing *********** //
 app.use('/api/', apiRoutes);
