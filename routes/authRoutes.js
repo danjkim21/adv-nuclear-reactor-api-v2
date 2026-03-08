@@ -13,6 +13,8 @@ router.post(
   passport.authenticate('local'),
   authController.login,
 );
+router.put('/user', authController.updateUser);
+router.patch('/users/:id', authController.updateUserPermissions);
 router.post('/login', passport.authenticate('local'), authController.login);
 router.post('/logout', authController.logout);
 

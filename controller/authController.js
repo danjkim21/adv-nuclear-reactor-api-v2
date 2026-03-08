@@ -26,6 +26,86 @@ exports.getAllUsers = async (req, res) => {
   }
 };
 
+exports.updateUser = async (req, res) => {
+  if (!req.user) {
+    return res.status(401).json({ error: 'Not authenticated' });
+  }
+
+  const { email, organization, password } = req.body;
+  const updates = {};
+
+  if (email !== undefined) updates.email = email;
+  if (organization !== undefined) updates.organization = organization;
+  if (password !== undefined) {
+    if (typeof password !== 'string' || password.length < 6) {
+      return res
+        .status(400)
+        .json({ error: 'Password must be at least 6 characters' });
+    }
+    updates.password = password;
+  }
+
+  if (Object.keys(updates).length === 0) {
+    return res
+      .status(400)
+      .json({ error: 'No valid fields provided to update' });
+  }
+
+  try {
+    const user = await User.findById(req.user._id);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    Object.assign(user, updates);
+    await user.save();
+    const { password: _pw, ...safeUser } = user.toObject();
+    res.json({ user: safeUser });
+  } catch (err) {
+    if (err.code === 11000) {
+      return res.status(409).json({ error: 'Username or email already taken' });
+    }
+    res.status(500).json({ error: 'Error updating user' });
+  }
+};
+
+exports.updateUserPermissions = async (req, res) => {
+  if (!req.user) {
+    return res.status(401).json({ error: 'Not authenticated' });
+  }
+  if (req.user.role !== 'admin') {
+    return res
+      .status(403)
+      .json({ error: 'User is not permitted to perform this operation' });
+  }
+  const { role, verified } = req.body;
+  const updates = {};
+
+  if (role !== undefined) updates.role = role;
+  if (verified !== undefined) updates.verified = verified;
+  if (Object.keys(updates).length === 0) {
+    return res
+      .status(400)
+      .json({ error: 'No valid fields provided to update' });
+  }
+
+  try {
+    const user = await User.findByIdAndUpdate(
+      req.params.id,
+      { $set: updates },
+      { new: true, runValidators: true, select: '-password' },
+    );
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    res.json({ user });
+  } catch (err) {
+    if (err.name === 'ValidationError') {
+      return res.status(400).json({ error: err.message });
+    }
+    res.status(500).json({ error: 'Error updating user' });
+  }
+};
+
 exports.checkAlreadyRegistered = async (req, res, next) => {
   try {
     const { username, email } = req.body;
